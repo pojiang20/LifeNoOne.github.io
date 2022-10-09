@@ -116,7 +116,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -146,6 +146,141 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/09/exporter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/09/exporter/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-10-09 21:23:29" itemprop="dateCreated datePublished" datetime="2022-10-09T21:23:29+08:00">2022-10-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="整体"><a href="#整体" class="headerlink" title="整体"></a>整体</h4><p>一个文件会有创建日期、大小、文件类型等基本信息，这类信息称为元数据。一条元数据比一个文件小很多，但是访问频率更高。清单系统向外提供接口，来访问元数据清单。</p>
+<h3 id="serviceNode"><a href="#serviceNode" class="headerlink" title="serviceNode"></a>serviceNode</h3><h4 id="对外接口"><a href="#对外接口" class="headerlink" title="对外接口"></a>对外接口</h4><p>以任务为单位访问使用接口，对任务进行增（添加任务）删（删除任务）查（查看任务或任务状态）改（修改状态和暂停任务）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ADD_TASK        = <span class="string">&quot;/tasks&quot;</span></span><br><span class="line">DELETE_TASK     = <span class="string">&quot;/tasks/&#123;task_id&#125;&quot;</span></span><br><span class="line">STOP_TASK       = <span class="string">&quot;/tasks/&#123;task_id&#125;?stop&quot;</span></span><br><span class="line">START_TASK      = <span class="string">&quot;/tasks/&#123;task_id&#125;?start&quot;</span></span><br><span class="line">MOD_STATUS      = <span class="string">&quot;/tasks/&#123;task_id&#125;?status&amp;statusName=&#123;statusName&#125;&quot;</span></span><br><span class="line">GET_TASK        = <span class="string">&quot;/tasks?&quot;</span></span><br><span class="line">GET_TASK_STATUS = <span class="string">&quot;/tasks/&#123;task_id&#125;?status&quot;</span></span><br></pre></td></tr></table></figure>
+<p>使用接口，会将任务更新到DB中。</p>
+<h4 id="单节点系统：任务产生"><a href="#单节点系统：任务产生" class="headerlink" title="单节点系统：任务产生"></a>单节点系统：任务产生</h4><p>在<code>task_generator.go</code>实现，将分发的<code>userTask</code>拆解成多个可以由<code>workerNode</code>执行的<code>task</code>。这里分为<code>checkWorkerHealth</code>`checkPriorityTasks<code>\</code>decomposeTasks&#96;三步</p>
+<ul>
+<li><code>checkWorkerHealth</code>保证该<code>serviceNode</code>所属的<code>workerNode</code>是健康的；</li>
+<li><code>checkPriorityTasks</code>来指定任务优先级，这里和业务逻辑有关，需要<code>query-&gt;merge-&gt;upload</code>三步中前一步完成才能进行下一步；（实现上是不断地将某个阶段的<code>workerTask</code>改为<code>runnable</code>状态）</li>
+<li><code>decomposeTasks</code>完成具体的任务分发，配置好<code>workerNode</code>执行过程中所需要的所有参数，写入<code>task</code>表；</li>
+</ul>
+<p>这三个功能都是围绕<code>DB</code>独立存在，数据从<code>DB</code>中读取，数据修改后也是写入<code>DB</code></p>
+<h4 id="单节点系统：任务分发"><a href="#单节点系统：任务分发" class="headerlink" title="单节点系统：任务分发"></a>单节点系统：任务分发</h4><p>分发<code>user_task</code>中<code>USER_TASK_RUNNING/RUNNABLE</code>的任务，将其对应<code>task</code>表中所有<code>runnable</code>的任务，通过接口（<code>http</code>请求）分发给<code>workerNode</code>。</p>
+<h4 id="单节点系统：任务结束"><a href="#单节点系统：任务结束" class="headerlink" title="单节点系统：任务结束"></a>单节点系统：任务结束</h4><p><code>serviceNode</code>将<code>userTask</code>拆解成<code>workerTask</code>后，查看<code>workerNode</code>中<code>workerTask</code>的执行情况。状态关联如下表，从上到下从左到右有逻辑关系。</p>
+<table>
+<thead>
+<tr>
+<th>worker_task状态</th>
+<th>user_task状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WORKER_FAILED</td>
+<td>USER_TASK_FAILED</td>
+</tr>
+<tr>
+<td>WORKER_STOPPED</td>
+<td>USER_TASK_STOPPED</td>
+</tr>
+<tr>
+<td>WORKER_RUNNING</td>
+<td>USER_TASK_RUNNING</td>
+</tr>
+<tr>
+<td>WORKER_FINISHED</td>
+<td>USER_TASK_FINISHED</td>
+</tr>
+</tbody></table>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_FAILED]; ok &amp;&amp; cnt &gt; <span class="number">0</span> &#123;</span><br><span class="line">    task.Status = common.USER_TASK_FAILED</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_STOPPED]; ok &amp;&amp; cnt &gt; <span class="number">0</span> &#123;</span><br><span class="line">    task.Status = common.USER_TASK_STOPPED</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_RUNNING]; ok &amp;&amp; cnt &gt; <span class="number">0</span> &#123;</span><br><span class="line">    task.Status = common.USER_TASK_RUNNING</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_FINISHED]; ok &amp;&amp; cnt == sumWorkers &#123;</span><br><span class="line">    <span class="comment">// 特殊处理：如果是lcc的任务并且callback被设置了，那就设置任务为USER_TASK_EXPORT_FINISHED</span></span><br><span class="line">    <span class="keyword">if</span> task.Callback.CallbackType != common.CB_EMPTY &amp;&amp; task.TaskType == common.LIFECYCLE &#123;</span><br><span class="line">        task.Status = common.USER_TASK_EXPORT_FINISHED</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        task.Status = common.USER_TASK_FINISHED</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="多节点高可用、"><a href="#多节点高可用、" class="headerlink" title="多节点高可用、"></a>多节点高可用、</h4><p>为了保证服务的高可用性，会开启多个<code>serviceNode</code>，通过<code>consul</code>实现服务发现，更新心跳维护状态、选出<code>controller</code>来负载均衡和任务迁移。</p>
+<h4 id="多节点高可用：controller抢占"><a href="#多节点高可用：controller抢占" class="headerlink" title="多节点高可用：controller抢占"></a>多节点高可用：controller抢占</h4><p>多个<code>serviceNode</code>会有一个<code>controller</code>，每个<code>serviceNode</code>都会不断抢占<code>controller</code>。<code>DB</code>中维护了一个<code>controller</code>表，其中记录了<code>update_time</code>更新时间和<code>node_id</code>当选节点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;_id&quot;</span> : <span class="string">&quot;ROLE_CONTROLLER&quot;</span>,</span><br><span class="line">	<span class="string">&quot;update_time&quot;</span> : NumberLong(<span class="string">&quot;1663656759835&quot;</span>),</span><br><span class="line">	<span class="string">&quot;addr&quot;</span> : <span class="string">&quot;127.0.0.1:53879&quot;</span>,</span><br><span class="line">	<span class="string">&quot;node_id&quot;</span> : <span class="string">&quot;srv_1&quot;</span>,</span><br><span class="line">	<span class="string">&quot;info&quot;</span> : <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抢占成功，<code>serviceNode</code>会<code>accede</code>上位，将内存中<code>isIamController=true</code>，很多操作是<code>if isIamController&#123;&#125;</code>结构来执行。<br>如果太久没有更新，可能会被其他节点抢占<code>controller</code>，更新<code>controller</code>表。<br>如果</p>
+<h4 id="多节点高可用：健康检查"><a href="#多节点高可用：健康检查" class="headerlink" title="多节点高可用：健康检查"></a>多节点高可用：健康检查</h4><p>所有<code>serviceNode</code>维护了一个<code>nodeload</code>来记录<code>healthStatus</code>健康状态和<code>load</code>负载任务数量，由<code>controller</code>来维护。<code>checkSvrHealth</code>就是不断地从<code>DB</code>的<code>health_status</code>表中读取数据，数据用来更新<code>nodeload</code>。其中<code>healthStatus</code>表的写入是在<code>servicNode</code>的<code>heartbeat</code>中完成的。</p>
+<h4 id="多节点高可用：迁移"><a href="#多节点高可用：迁移" class="headerlink" title="多节点高可用：迁移"></a>多节点高可用：迁移</h4><p>迁移用于处理<code>serviceNode</code>挂掉任务迁移和负载均衡两种情况：</p>
+<ul>
+<li>如果有<code>serviceNode</code>挂掉，那么需要将分配给该节点的任务迁移到正常节点，保证任务正常处理。判断不健康的条件是<code>serviceNode</code>的<code>update_time</code>更新时间太老，会将该节点的任务迁移到正常节点。即查询<code>user_task</code>中非<code>completed</code>状态的任务，使用（发送http请求）<code>migrate_task</code>接口，<code>migrate_task</code>对应的方法仅仅是修改了<code>DB</code>中的<code>service_id</code>，即任务可以在<code>workerNode</code>中继续执行，但是其所属的<code>serviceNode</code>发生了变化。</li>
+<li>如果节点的<code>load</code>负载任务数差值过大，则会将高负载节点的任务迁移到低负载节点中。</li>
+</ul>
+<h4 id="多节点高可用：心跳"><a href="#多节点高可用：心跳" class="headerlink" title="多节点高可用：心跳"></a>多节点高可用：心跳</h4><p>每个<code>serviceNode</code>都会定期向<code>health_status</code>中更新<code>update_time</code>。</p>
+<h4 id="多节点高可用：结束"><a href="#多节点高可用：结束" class="headerlink" title="多节点高可用：结束"></a>多节点高可用：结束</h4><p>如果任意<code>serviceNode</code>有<code>tmp := time.Now().UnixMilli() - s.iAmHealthSvrNodeTime</code>的<code>tmp</code>太大，则会<code>serviceNode</code>会自动结束。（启动是使用<code>supervisor</code>）</p>
+<h3 id="workerNode"><a href="#workerNode" class="headerlink" title="workerNode"></a>workerNode</h3><p><code>workerNode</code>提供接口获取分解好的任务，由<code>workerTask</code>执行具体操作。操作都是从一个处将数据写入到另一处。</p>
+<h4 id="对外接口-1"><a href="#对外接口-1" class="headerlink" title="对外接口"></a>对外接口</h4><p><code>workerNode</code>提供增、删、暂停和重启任务的接口，该接口由<code>serviceNode</code>访问。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKER_ADD_TASK    = <span class="string">&quot;/worker/tasks&quot;</span></span><br><span class="line">WORKER_STOP_TASK   = <span class="string">&quot;/worker/tasks/&#123;user_task_id&#125;?stop&quot;</span></span><br><span class="line">WORKER_START_TASK  = <span class="string">&quot;/worker/tasks/&#123;user_task_id&#125;?start&quot;</span></span><br><span class="line">WORKER_DELETE_TASK = <span class="string">&quot;/worker/tasks/&#123;user_task_id&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="任务添加"><a href="#任务添加" class="headerlink" title="任务添加"></a>任务添加</h4><p><code>AddTask(taskId)</code>用于任务添加，除了对应<code>WORKER_ADD_TASK</code>接口来使得调用者主动添加任务。它还在<code>loadTasks()</code>过程中使用，<code>loadTasks</code>是<code>workerNode</code>主动访问<code>DB</code>来加载任务，这是因为<code>workerNode</code>是无状态的，新的<code>workerNode</code>可能需要执行之前未完成的任务。</p>
+<h4 id="任务删除"><a href="#任务删除" class="headerlink" title="任务删除"></a>任务删除</h4><p>暂停任务且删除本地偏移量。</p>
+<h4 id="任务暂停和重启"><a href="#任务暂停和重启" class="headerlink" title="任务暂停和重启"></a>任务暂停和重启</h4><p><code>workerNode</code>维护了<code>stoppedWorker</code>`runningWorker<code>两个</code>map<code>来在内存中记录状态。</code>stoppedWorker<code>只对</code>userTaskId<code>做简单标记，而</code>runningWorker<code>则是</code>map[string]map[string]*WorkerTask<code>，通过</code>runningWorker[userTaskId][taskId]&#x3D;task<code>，存储每个具体的执行单元</code>workerTask<code>。 暂停任务会以</code>userTask<code>为单位暂停，在</code>stoppedWorker<code>做标记（即其所属的</code>task<code>全部暂停）。然后给执行的</code>workerTask<code>发送暂停信号量。 </code>StartTask<code>可以重启任务，其操作只是将</code>userTaskId<code>从</code>stoppedWorker&#96;中移除。</p>
+<blockquote>
+<p>这样的目的是，任务后续可以再次从<code>serviceNode</code>端向<code>workerNode</code>端使用<code>AddTask</code>添加，因为<code>AddTask</code>会过滤掉<code>stoppedWorker</code>标记的<code>userTask</code>。</p>
+</blockquote>
+<blockquote>
+<p>使用<code>serviceNode.taskGenerator.StartUserTask(userTaskId)</code>，这个方法会根据传入的<code>userTaskId</code>，查询属于其的<code>workerTask</code>，将其状态修改为<code>runnable</code></p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *TaskGenerator)</span></span> StartUserTask(taskId <span class="type">string</span>) <span class="type">error</span> &#123;</span><br><span class="line">	wt, err := t.dbHelp.QueryWorkerTasks(bson.M&#123;</span><br><span class="line">		<span class="string">&quot;user_task_id&quot;</span>: taskId,</span><br><span class="line">	&#125;, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, item := <span class="keyword">range</span> wt &#123;</span><br><span class="line">		item.Status = common.WORKER_TASK_RUNNABLE</span><br><span class="line">		err = t.dbHelp.UpdateWorkerTask(bson.M&#123;</span><br><span class="line">			<span class="string">&quot;_id&quot;</span>: item.TaskId,</span><br><span class="line">		&#125;, item, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ServiceNode</code>的<code>Dispatcher</code>会将<code>DB</code>中所有<code>runnable</code>的状态，调用<code>workerNode</code>的<code>add</code>将其修改为<code>running</code>（即重新调用<code>AddTask</code>添加任务）</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1060671/1663919551123-13dae208-3aff-4730-97b9-b176f5945c06.png#clientId=ue96cc3da-9125-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=333&id=uc584c45e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=666&originWidth=3975&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2878883&status=done&style=none&taskId=u6dfe5e4b-e239-4068-952d-77f6e6b5855&title=&width=1987.5" alt="image.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

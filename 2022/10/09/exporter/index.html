@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="整体一个文件会有创建日期、大小、文件类型等基本信息，这类信息称为元数据。一条元数据比一个文件小很多，但是访问频率更高。清单系统向外提供接口，来访问元数据清单。 serviceNode对外接口以任务为单位访问使用接口，对任务进行增（添加任务）删（删除任务）查（查看任务或任务状态）改（修改状态和暂停任务） 1234567ADD_TASK        &#x3D; &quot;&#x2F;tasks&quot;DELET">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/10/09/exporter/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="整体一个文件会有创建日期、大小、文件类型等基本信息，这类信息称为元数据。一条元数据比一个文件小很多，但是访问频率更高。清单系统向外提供接口，来访问元数据清单。 serviceNode对外接口以任务为单位访问使用接口，对任务进行增（添加任务）删（删除任务）查（查看任务或任务状态）改（修改状态和暂停任务） 1234567ADD_TASK        &#x3D; &quot;&#x2F;tasks&quot;DELET">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2022/png/1060671/1663919551123-13dae208-3aff-4730-97b9-b176f5945c06.png#clientId=ue96cc3da-9125-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=333&id=uc584c45e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=666&originWidth=3975&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2878883&status=done&style=none&taskId=u6dfe5e4b-e239-4068-952d-77f6e6b5855&title=&width=1987.5">
+<meta property="article:published_time" content="2022-10-09T13:23:29.463Z">
+<meta property="article:modified_time" content="2022-10-09T13:23:29.463Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2022/png/1060671/1663919551123-13dae208-3aff-4730-97b9-b176f5945c06.png#clientId=ue96cc3da-9125-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=333&id=uc584c45e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=666&originWidth=3975&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2878883&status=done&style=none&taskId=u6dfe5e4b-e239-4068-952d-77f6e6b5855&title=&width=1987.5">
+
+
+<link rel="canonical" href="http://example.com/2022/10/09/exporter/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/10/09/exporter/","path":"2022/10/09/exporter/","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | Hexo</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B4%E4%BD%93"><span class="nav-number">1.</span> <span class="nav-text">整体</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#serviceNode"><span class="nav-number"></span> <span class="nav-text">serviceNode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">对外接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E8%8A%82%E7%82%B9%E7%B3%BB%E7%BB%9F%EF%BC%9A%E4%BB%BB%E5%8A%A1%E4%BA%A7%E7%94%9F"><span class="nav-number">2.</span> <span class="nav-text">单节点系统：任务产生</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E8%8A%82%E7%82%B9%E7%B3%BB%E7%BB%9F%EF%BC%9A%E4%BB%BB%E5%8A%A1%E5%88%86%E5%8F%91"><span class="nav-number">3.</span> <span class="nav-text">单节点系统：任务分发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E8%8A%82%E7%82%B9%E7%B3%BB%E7%BB%9F%EF%BC%9A%E4%BB%BB%E5%8A%A1%E7%BB%93%E6%9D%9F"><span class="nav-number">4.</span> <span class="nav-text">单节点系统：任务结束</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%8A%82%E7%82%B9%E9%AB%98%E5%8F%AF%E7%94%A8%E3%80%81"><span class="nav-number">5.</span> <span class="nav-text">多节点高可用、</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%8A%82%E7%82%B9%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%9Acontroller%E6%8A%A2%E5%8D%A0"><span class="nav-number">6.</span> <span class="nav-text">多节点高可用：controller抢占</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%8A%82%E7%82%B9%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%9A%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="nav-number">7.</span> <span class="nav-text">多节点高可用：健康检查</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%8A%82%E7%82%B9%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%9A%E8%BF%81%E7%A7%BB"><span class="nav-number">8.</span> <span class="nav-text">多节点高可用：迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%8A%82%E7%82%B9%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%9A%E5%BF%83%E8%B7%B3"><span class="nav-number">9.</span> <span class="nav-text">多节点高可用：心跳</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E8%8A%82%E7%82%B9%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%9A%E7%BB%93%E6%9D%9F"><span class="nav-number">10.</span> <span class="nav-text">多节点高可用：结束</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#workerNode"><span class="nav-number"></span> <span class="nav-text">workerNode</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E5%A4%96%E6%8E%A5%E5%8F%A3-1"><span class="nav-number">1.</span> <span class="nav-text">对外接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%B7%BB%E5%8A%A0"><span class="nav-number">2.</span> <span class="nav-text">任务添加</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%88%A0%E9%99%A4"><span class="nav-number">3.</span> <span class="nav-text">任务删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%9A%82%E5%81%9C%E5%92%8C%E9%87%8D%E5%90%AF"><span class="nav-number">4.</span> <span class="nav-text">任务暂停和重启</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/09/exporter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-10-09 21:23:29" itemprop="dateCreated datePublished" datetime="2022-10-09T21:23:29+08:00">2022-10-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="整体"><a href="#整体" class="headerlink" title="整体"></a>整体</h4><p>一个文件会有创建日期、大小、文件类型等基本信息，这类信息称为元数据。一条元数据比一个文件小很多，但是访问频率更高。清单系统向外提供接口，来访问元数据清单。</p>
+<h3 id="serviceNode"><a href="#serviceNode" class="headerlink" title="serviceNode"></a>serviceNode</h3><h4 id="对外接口"><a href="#对外接口" class="headerlink" title="对外接口"></a>对外接口</h4><p>以任务为单位访问使用接口，对任务进行增（添加任务）删（删除任务）查（查看任务或任务状态）改（修改状态和暂停任务）</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ADD_TASK        = <span class="string">&quot;/tasks&quot;</span></span><br><span class="line">DELETE_TASK     = <span class="string">&quot;/tasks/&#123;task_id&#125;&quot;</span></span><br><span class="line">STOP_TASK       = <span class="string">&quot;/tasks/&#123;task_id&#125;?stop&quot;</span></span><br><span class="line">START_TASK      = <span class="string">&quot;/tasks/&#123;task_id&#125;?start&quot;</span></span><br><span class="line">MOD_STATUS      = <span class="string">&quot;/tasks/&#123;task_id&#125;?status&amp;statusName=&#123;statusName&#125;&quot;</span></span><br><span class="line">GET_TASK        = <span class="string">&quot;/tasks?&quot;</span></span><br><span class="line">GET_TASK_STATUS = <span class="string">&quot;/tasks/&#123;task_id&#125;?status&quot;</span></span><br></pre></td></tr></table></figure>
+<p>使用接口，会将任务更新到DB中。</p>
+<h4 id="单节点系统：任务产生"><a href="#单节点系统：任务产生" class="headerlink" title="单节点系统：任务产生"></a>单节点系统：任务产生</h4><p>在<code>task_generator.go</code>实现，将分发的<code>userTask</code>拆解成多个可以由<code>workerNode</code>执行的<code>task</code>。这里分为<code>checkWorkerHealth</code>`checkPriorityTasks<code>\</code>decomposeTasks&#96;三步</p>
+<ul>
+<li><code>checkWorkerHealth</code>保证该<code>serviceNode</code>所属的<code>workerNode</code>是健康的；</li>
+<li><code>checkPriorityTasks</code>来指定任务优先级，这里和业务逻辑有关，需要<code>query-&gt;merge-&gt;upload</code>三步中前一步完成才能进行下一步；（实现上是不断地将某个阶段的<code>workerTask</code>改为<code>runnable</code>状态）</li>
+<li><code>decomposeTasks</code>完成具体的任务分发，配置好<code>workerNode</code>执行过程中所需要的所有参数，写入<code>task</code>表；</li>
+</ul>
+<p>这三个功能都是围绕<code>DB</code>独立存在，数据从<code>DB</code>中读取，数据修改后也是写入<code>DB</code></p>
+<h4 id="单节点系统：任务分发"><a href="#单节点系统：任务分发" class="headerlink" title="单节点系统：任务分发"></a>单节点系统：任务分发</h4><p>分发<code>user_task</code>中<code>USER_TASK_RUNNING/RUNNABLE</code>的任务，将其对应<code>task</code>表中所有<code>runnable</code>的任务，通过接口（<code>http</code>请求）分发给<code>workerNode</code>。</p>
+<h4 id="单节点系统：任务结束"><a href="#单节点系统：任务结束" class="headerlink" title="单节点系统：任务结束"></a>单节点系统：任务结束</h4><p><code>serviceNode</code>将<code>userTask</code>拆解成<code>workerTask</code>后，查看<code>workerNode</code>中<code>workerTask</code>的执行情况。状态关联如下表，从上到下从左到右有逻辑关系。</p>
+<table>
+<thead>
+<tr>
+<th>worker_task状态</th>
+<th>user_task状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WORKER_FAILED</td>
+<td>USER_TASK_FAILED</td>
+</tr>
+<tr>
+<td>WORKER_STOPPED</td>
+<td>USER_TASK_STOPPED</td>
+</tr>
+<tr>
+<td>WORKER_RUNNING</td>
+<td>USER_TASK_RUNNING</td>
+</tr>
+<tr>
+<td>WORKER_FINISHED</td>
+<td>USER_TASK_FINISHED</td>
+</tr>
+</tbody></table>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_FAILED]; ok &amp;&amp; cnt &gt; <span class="number">0</span> &#123;</span><br><span class="line">    task.Status = common.USER_TASK_FAILED</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_STOPPED]; ok &amp;&amp; cnt &gt; <span class="number">0</span> &#123;</span><br><span class="line">    task.Status = common.USER_TASK_STOPPED</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_RUNNING]; ok &amp;&amp; cnt &gt; <span class="number">0</span> &#123;</span><br><span class="line">    task.Status = common.USER_TASK_RUNNING</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> cnt, ok := statusCount[common.WORKER_FINISHED]; ok &amp;&amp; cnt == sumWorkers &#123;</span><br><span class="line">    <span class="comment">// 特殊处理：如果是lcc的任务并且callback被设置了，那就设置任务为USER_TASK_EXPORT_FINISHED</span></span><br><span class="line">    <span class="keyword">if</span> task.Callback.CallbackType != common.CB_EMPTY &amp;&amp; task.TaskType == common.LIFECYCLE &#123;</span><br><span class="line">        task.Status = common.USER_TASK_EXPORT_FINISHED</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        task.Status = common.USER_TASK_FINISHED</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="多节点高可用、"><a href="#多节点高可用、" class="headerlink" title="多节点高可用、"></a>多节点高可用、</h4><p>为了保证服务的高可用性，会开启多个<code>serviceNode</code>，通过<code>consul</code>实现服务发现，更新心跳维护状态、选出<code>controller</code>来负载均衡和任务迁移。</p>
+<h4 id="多节点高可用：controller抢占"><a href="#多节点高可用：controller抢占" class="headerlink" title="多节点高可用：controller抢占"></a>多节点高可用：controller抢占</h4><p>多个<code>serviceNode</code>会有一个<code>controller</code>，每个<code>serviceNode</code>都会不断抢占<code>controller</code>。<code>DB</code>中维护了一个<code>controller</code>表，其中记录了<code>update_time</code>更新时间和<code>node_id</code>当选节点。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="string">&quot;_id&quot;</span> : <span class="string">&quot;ROLE_CONTROLLER&quot;</span>,</span><br><span class="line">	<span class="string">&quot;update_time&quot;</span> : NumberLong(<span class="string">&quot;1663656759835&quot;</span>),</span><br><span class="line">	<span class="string">&quot;addr&quot;</span> : <span class="string">&quot;127.0.0.1:53879&quot;</span>,</span><br><span class="line">	<span class="string">&quot;node_id&quot;</span> : <span class="string">&quot;srv_1&quot;</span>,</span><br><span class="line">	<span class="string">&quot;info&quot;</span> : <span class="string">&quot;&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抢占成功，<code>serviceNode</code>会<code>accede</code>上位，将内存中<code>isIamController=true</code>，很多操作是<code>if isIamController&#123;&#125;</code>结构来执行。<br>如果太久没有更新，可能会被其他节点抢占<code>controller</code>，更新<code>controller</code>表。<br>如果</p>
+<h4 id="多节点高可用：健康检查"><a href="#多节点高可用：健康检查" class="headerlink" title="多节点高可用：健康检查"></a>多节点高可用：健康检查</h4><p>所有<code>serviceNode</code>维护了一个<code>nodeload</code>来记录<code>healthStatus</code>健康状态和<code>load</code>负载任务数量，由<code>controller</code>来维护。<code>checkSvrHealth</code>就是不断地从<code>DB</code>的<code>health_status</code>表中读取数据，数据用来更新<code>nodeload</code>。其中<code>healthStatus</code>表的写入是在<code>servicNode</code>的<code>heartbeat</code>中完成的。</p>
+<h4 id="多节点高可用：迁移"><a href="#多节点高可用：迁移" class="headerlink" title="多节点高可用：迁移"></a>多节点高可用：迁移</h4><p>迁移用于处理<code>serviceNode</code>挂掉任务迁移和负载均衡两种情况：</p>
+<ul>
+<li>如果有<code>serviceNode</code>挂掉，那么需要将分配给该节点的任务迁移到正常节点，保证任务正常处理。判断不健康的条件是<code>serviceNode</code>的<code>update_time</code>更新时间太老，会将该节点的任务迁移到正常节点。即查询<code>user_task</code>中非<code>completed</code>状态的任务，使用（发送http请求）<code>migrate_task</code>接口，<code>migrate_task</code>对应的方法仅仅是修改了<code>DB</code>中的<code>service_id</code>，即任务可以在<code>workerNode</code>中继续执行，但是其所属的<code>serviceNode</code>发生了变化。</li>
+<li>如果节点的<code>load</code>负载任务数差值过大，则会将高负载节点的任务迁移到低负载节点中。</li>
+</ul>
+<h4 id="多节点高可用：心跳"><a href="#多节点高可用：心跳" class="headerlink" title="多节点高可用：心跳"></a>多节点高可用：心跳</h4><p>每个<code>serviceNode</code>都会定期向<code>health_status</code>中更新<code>update_time</code>。</p>
+<h4 id="多节点高可用：结束"><a href="#多节点高可用：结束" class="headerlink" title="多节点高可用：结束"></a>多节点高可用：结束</h4><p>如果任意<code>serviceNode</code>有<code>tmp := time.Now().UnixMilli() - s.iAmHealthSvrNodeTime</code>的<code>tmp</code>太大，则会<code>serviceNode</code>会自动结束。（启动是使用<code>supervisor</code>）</p>
+<h3 id="workerNode"><a href="#workerNode" class="headerlink" title="workerNode"></a>workerNode</h3><p><code>workerNode</code>提供接口获取分解好的任务，由<code>workerTask</code>执行具体操作。操作都是从一个处将数据写入到另一处。</p>
+<h4 id="对外接口-1"><a href="#对外接口-1" class="headerlink" title="对外接口"></a>对外接口</h4><p><code>workerNode</code>提供增、删、暂停和重启任务的接口，该接口由<code>serviceNode</code>访问。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKER_ADD_TASK    = <span class="string">&quot;/worker/tasks&quot;</span></span><br><span class="line">WORKER_STOP_TASK   = <span class="string">&quot;/worker/tasks/&#123;user_task_id&#125;?stop&quot;</span></span><br><span class="line">WORKER_START_TASK  = <span class="string">&quot;/worker/tasks/&#123;user_task_id&#125;?start&quot;</span></span><br><span class="line">WORKER_DELETE_TASK = <span class="string">&quot;/worker/tasks/&#123;user_task_id&#125;&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="任务添加"><a href="#任务添加" class="headerlink" title="任务添加"></a>任务添加</h4><p><code>AddTask(taskId)</code>用于任务添加，除了对应<code>WORKER_ADD_TASK</code>接口来使得调用者主动添加任务。它还在<code>loadTasks()</code>过程中使用，<code>loadTasks</code>是<code>workerNode</code>主动访问<code>DB</code>来加载任务，这是因为<code>workerNode</code>是无状态的，新的<code>workerNode</code>可能需要执行之前未完成的任务。</p>
+<h4 id="任务删除"><a href="#任务删除" class="headerlink" title="任务删除"></a>任务删除</h4><p>暂停任务且删除本地偏移量。</p>
+<h4 id="任务暂停和重启"><a href="#任务暂停和重启" class="headerlink" title="任务暂停和重启"></a>任务暂停和重启</h4><p><code>workerNode</code>维护了<code>stoppedWorker</code>`runningWorker<code>两个</code>map<code>来在内存中记录状态。</code>stoppedWorker<code>只对</code>userTaskId<code>做简单标记，而</code>runningWorker<code>则是</code>map[string]map[string]*WorkerTask<code>，通过</code>runningWorker[userTaskId][taskId]&#x3D;task<code>，存储每个具体的执行单元</code>workerTask<code>。 暂停任务会以</code>userTask<code>为单位暂停，在</code>stoppedWorker<code>做标记（即其所属的</code>task<code>全部暂停）。然后给执行的</code>workerTask<code>发送暂停信号量。 </code>StartTask<code>可以重启任务，其操作只是将</code>userTaskId<code>从</code>stoppedWorker&#96;中移除。</p>
+<blockquote>
+<p>这样的目的是，任务后续可以再次从<code>serviceNode</code>端向<code>workerNode</code>端使用<code>AddTask</code>添加，因为<code>AddTask</code>会过滤掉<code>stoppedWorker</code>标记的<code>userTask</code>。</p>
+</blockquote>
+<blockquote>
+<p>使用<code>serviceNode.taskGenerator.StartUserTask(userTaskId)</code>，这个方法会根据传入的<code>userTaskId</code>，查询属于其的<code>workerTask</code>，将其状态修改为<code>runnable</code></p>
+</blockquote>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *TaskGenerator)</span></span> StartUserTask(taskId <span class="type">string</span>) <span class="type">error</span> &#123;</span><br><span class="line">	wt, err := t.dbHelp.QueryWorkerTasks(bson.M&#123;</span><br><span class="line">		<span class="string">&quot;user_task_id&quot;</span>: taskId,</span><br><span class="line">	&#125;, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, item := <span class="keyword">range</span> wt &#123;</span><br><span class="line">		item.Status = common.WORKER_TASK_RUNNABLE</span><br><span class="line">		err = t.dbHelp.UpdateWorkerTask(bson.M&#123;</span><br><span class="line">			<span class="string">&quot;_id&quot;</span>: item.TaskId,</span><br><span class="line">		&#125;, item, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ServiceNode</code>的<code>Dispatcher</code>会将<code>DB</code>中所有<code>runnable</code>的状态，调用<code>workerNode</code>的<code>add</code>将其修改为<code>running</code>（即重新调用<code>AddTask</code>添加任务）</p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2022/png/1060671/1663919551123-13dae208-3aff-4730-97b9-b176f5945c06.png#clientId=ue96cc3da-9125-4&crop=0&crop=0&crop=1&crop=1&from=paste&height=333&id=uc584c45e&margin=%5Bobject%20Object%5D&name=image.png&originHeight=666&originWidth=3975&originalType=binary&ratio=1&rotation=0&showTitle=false&size=2878883&status=done&style=none&taskId=u6dfe5e4b-e239-4068-952d-77f6e6b5855&title=&width=1987.5" alt="image.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/22/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/3%20%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/" rel="prev" title="">
+                  <i class="fa fa-chevron-left"></i> 
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
